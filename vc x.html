@@ -1,0 +1,337 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyiza Murenzi Arnold - Entertainment Hub Rwanda</title>
+  </head>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #000; color: #fff; }
+        header { background-color: #c00; padding: 20px; text-align: center; }
+        .logo { 
+            font-size: 2.8em; 
+            font-weight: bold; 
+            color: #fff; 
+            text-shadow: 3px 3px 6px #000, 0 0 10px #ff0000;
+            letter-spacing: 2px;
+        }
+        .logo span { color: #ff4444; }
+        nav { background-color: #333; padding: 15px; text-align: center; }
+        nav a { color: #fff; margin: 0 15px; text-decoration: none; font-weight: bold; }
+        nav a:hover { color: #c00; }
+        #user-status { display: inline; margin-left: 20px; font-weight: bold; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 20px; }
+        .hidden { display: none; }
+        .search-bar { margin: 20px 0; text-align: center; }
+        .search-bar input { width: 80%; max-width: 600px; padding: 15px; font-size: 1.2em; background: #222; border: 2px solid #c00; color: #fff; border-radius: 50px; }
+        .featured-cover { position: relative; height: 60vh; background-size: cover; background-position: center; border-radius: 15px; margin-bottom: 40px; }
+        .featured-overlay { position: absolute; bottom: 30px; left: 30px; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 10px; }
+        .join-btn { background: #c00; color: #fff; border: none; padding: 15px 30px; font-size: 1.5em; cursor: pointer; border-radius: 8px; }
+        .attract-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .attract-card { background: #222; border-radius: 10px; overflow: hidden; cursor: pointer; transition: 0.3s; }
+        .attract-card:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255,0,0,0.5); }
+        .attract-card img { width: 100%; height: 350px; object-fit: cover; }
+        .attract-card h3 { text-align: center; padding: 15px; background: #c00; margin: 0; font-size: 1.1em; }
+        form { max-width: 500px; margin: 40px auto; background: #222; padding: 30px; border-radius: 15px; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #333; border: 1px solid #c00; color: #fff; border-radius: 8px; font-size: 1.1em; }
+        button { background: #c00; color: #fff; border: none; padding: 15px; width: 100%; font-size: 1.3em; cursor: pointer; border-radius: 8px; margin-top: 20px; }
+        button:hover { background: #ff0000; }
+        .plan-options { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+        .plan-btn { flex: 1; padding: 20px; text-align: center; background: #333; border: 2px solid #c00; border-radius: 10px; cursor: pointer; }
+        .plan-btn.selected { background: #c00; }
+        footer { background: #111; padding: 20px; text-align: center; margin-top: 50px; }
+        .admin-item { background: #222; padding: 15px; margin: 15px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .delete-btn { background: #900; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">CYIZA <span>MURENZI</span> ARNOLD</div>
+</header>
+
+<nav>
+    <a href="#" onclick="showSection('home')">Home</a>
+    <a href="#" onclick="showSection('content')">All Content</a>
+    <span id="auth-links">
+        <a href="#" onclick="showSection('login')">Login</a>
+        <a href="#" onclick="showSection('signup')">Signup</a>
+    </span>
+    <span id="user-status" class="hidden"></span>
+    <a href="#" onclick="showSection('payment')">Subscribe</a>
+</nav>
+
+<div class="container" id="home">
+    <div class="search-bar"><input type="text" id="search-home" placeholder="Search movies, shows, games, TV..."></div>
+    <div id="featured"></div>
+    <h2 style="text-align:center; color:#c00;">Trending Now</h2>
+    <div class="attract-grid" id="grid-home"></div>
+</div>
+
+<div class="container hidden" id="content">
+    <h2>All Content</h2>
+    <div class="search-bar"><input type="text" id="search-all" placeholder="Search everything..."></div>
+    <div class="attract-grid" id="grid-all"></div>
+</div>
+
+<div class="container hidden" id="login">
+    <h2 style="text-align:center; color:#c00;">Login</h2>
+    <form>
+        <input type="text" id="login-id" placeholder="Phone (+250...) or Email" required>
+        <input type="password" id="login-pwd" placeholder="Password" required>
+        <button type="button" onclick="doLogin()">Login</button>
+    </form>
+</div>
+
+<div class="container hidden" id="signup">
+    <h2 style="text-align:center; color:#c00;">Create Account</h2>
+    <form>
+        <input type="text" id="signup-name" placeholder="Full Name" required>
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="tel" id="signup-phone" placeholder="Phone (+250...)" required>
+        <input type="password" id="signup-pwd" placeholder="Password" required>
+        <button type="button" onclick="doSignup()">Signup</button>
+    </form>
+</div>
+
+<div class="container hidden" id="payment">
+    <h2 style="text-align:center; color:#c00;">Subscribe via MTN MoMo</h2>
+    <p>Send to: <strong>+250786962064</strong></p>
+    <div class="plan-options">
+        <div class="plan-btn selected" onclick="selectPlan(this,1000)">1 Week - 1000 RWF</div>
+        <div class="plan-btn" onclick="selectPlan(this,4000)">1 Month - 4000 RWF</div>
+        <div class="plan-btn" onclick="selectPlan(this,48000)">1 Year - 48000 RWF</div>
+    </div>
+    <p>Send exactly <strong id="amount-show">1000 RWF</strong></p>
+    <button type="button" onclick="doSubscribe()">I Have Paid</button>
+</div>
+
+<div class="container hidden" id="admin">
+    <h2 style="text-align:center; color:#c00;">Admin Panel</h2>
+    <h3>Add New Content</h3>
+    <form>
+        <input type="text" id="admin-title" placeholder="Title" required>
+        <select id="admin-cat">
+            <option>Movie</option><option>TV Show</option><option>Game</option><option>Live TV</option>
+        </select>
+        <input type="url" id="admin-img" placeholder="Image URL" required>
+        <button type="button" onclick="adminAdd()">Add</button>
+    </form>
+    <h3>Manage Content</h3>
+    <div id="admin-list"></div>
+</div>
+
+<footer>
+    &copy; 2025 Cyiza Murenzi Arnold | Entertainment Hub Rwanda | Contact: +250786962064
+</footer>
+
+<script>
+    let contents = JSON.parse(localStorage.getItem('contents')) || [
+        // Movies
+        {title:"Captain America: Brave New World", category:"Movie", image:"https://whatkeptmeup.com/wp-content/uploads/2025/05/Ifeoluwanimi_Feature-2-998x665.webp"},
+        {title:"Mission: Impossible – Final Reckoning", category:"Movie", image:"https://whatkeptmeup.com/wp-content/uploads/2025/05/IMG_8865-998x665.webp"},
+        {title:"Avatar: Fire and Ash", category:"Movie", image:"https://english.cdn.zeenews.com/sites/default/files/styles/zm_700x400/public/2025/11/11/1860517-hollywood-films-2025.jpg"},
+        {title:"Thunderbolts", category:"Movie", image:"https://i.ytimg.com/vi/tUnRKUe2kP8/maxresdefault.jpg"},
+        {title:"Superman (2025)", category:"Movie", image:"https://media-cache.cinematerial.com/p/500x/rcy5s6jn/superman-british-movie-poster.jpg?v=1747442873"},
+        {title:"Snow White 2025", category:"Movie", image:"https://preview.redd.it/2025-is-gonna-be-a-great-year-for-gaming-what-are-you-v0-n7wd26fvgabe1.png?auto=webp&s=b7d756c514c4dbe36e37736f5189722b5b378d50"},
+        {title:"Wolf Man", category:"Movie", image:"https://bibliolifestyle.com/wp-content/uploads/2025/10/Collage-of-movie-and-tv-series-posters-of-the-9-Adaptations-to-Consider-October-2025-768x432.jpg"},
+        // TV Shows
+        {title:"Stranger Things Season 5", category:"TV Show", image:"https://images.sbs.com.au/dims4/default/bda1283/2147483647/strip/true/crop/1920x1080+0+0/resize/1280x720!/quality/90/?url=http%3A%2F%2Fsbs-au-brightspot.s3.amazonaws.com%2F94%2F2b%2F9d124d0b46b6a2ac2ee7f7b7c891%2Fbestof2025-1920x1080-tt.jpg"},
+        {title:"The Wheel of Time Season 3", category:"TV Show", image:"https://www.wotseries.com/wp-content/uploads/2025/03/tworiverss3postercollection.jpg"},
+        {title:"Andor Season 2", category:"TV Show", image:"https://blog.spectrumfilmschool.com/uploads/images/202510/image_870x_68e5174571986.jpg"},
+        {title:"Top Drama Series", category:"TV Show", image:"https://cdn.mos.cms.futurecdn.net/B2fnZ8cmpEDbvYvq8u2yHS-1200-80.jpg"},
+        // Games
+        {title:"Doom: The Dark Ages", category:"Game", image:"https://i.ytimg.com/vi/8_t1DzwL-KU/hq720.jpg"},
+        {title:"Clair Obscur: Expedition 33", category:"Game", image:"https://templeofgeek.com/wp-content/uploads/2025/07/keyart.webp"},
+        {title:"Avowed", category:"Game", image:"https://preview.redd.it/its-becoming-clear-2025-will-be-another-peak-year-for-v0-c98pi5asptkd1.jpeg?width=1080&crop=smart&auto=webp&s=07deb28cf5ef9bc589a7ecd13c11984698224cc6"},
+        {title:"Grand Theft Auto VI", category:"Game", image:"https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/12/ds-bestof2025-multiplayergame.jpg?w=1200&h=628&fit=crop"},
+        {title:"Death Stranding 2", category:"Game", image:"https://gmedia.playstation.com/is/image/SIEPDC/great-games-2025-death-stranding-2-01-en-28nov24?$native--t$"},
+        {title:"Lost Soul Aside", category:"Game", image:"https://gmedia.playstation.com/is/image/SIEPDC/great-games-2025-lost-soul-aside-01-en-30apr25$en?$native--t$"},
+        // Rwandan / Live TV
+        {title:"RTV Rwanda", category:"Live TV", image:"https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/d24f3380310129.5cdd52db471f1.png"},
+        {title:"Rwanda Television Live", category:"Live TV", image:"https://pbs.twimg.com/card_img/1987794171730530304/L-U2Klzj?format=jpg&name=large"},
+        {title:"TV1 Rwanda", category:"Live TV", image:"https://mir-s3-cdn-cf.behance.net/project_modules/1400_webp/7ba99f80310129.5cdd52db46e68.png"},
+        {title:"KC2 Kigali Channel", category:"Live TV", image:"https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100063700965004"}
+    ];
+
+    let users = JSON.parse(localStorage.getItem('users')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    let subscribed = localStorage.getItem('subscribed') === 'true';
+
+    function render() {
+        const grids = [document.getElementById('grid-home'), document.getElementById('grid-all')];
+        const featured = document.getElementById('featured');
+        grids.forEach(g => g.innerHTML = '');
+        if (contents.length > 0) {
+            featured.innerHTML = `<div class="featured-cover" style="background-image:url('${contents[0].image}')">
+                <div class="featured-overlay"><h2>${contents[0].title}</h2>
+                <button class="join-btn" onclick="playItem('${contents[0].title}')">Watch Now</button></div></div>`;
+        }
+        contents.forEach(item => {
+            const card = `<div class="attract-card" onclick="playItem('${item.title}')">
+                <img src="${item.image}" alt="${item.title}">
+                <h3>${item.title}<br><small>${item.category}</small></h3></div>`;
+            grids.forEach(g => g.innerHTML += card);
+        });
+    }
+
+    function playItem(title) {
+        if (currentUser && subscribed) {
+            alert(`Now playing: ${title} (Premium unlocked!)`);
+        } else {
+            alert(`Please signup, login & subscribe to watch ${title}`);
+            showSection('signup');
+        }
+    }
+
+    document.getElementById('search-home').addEventListener('input', e => filter(e.target.value));
+    document.getElementById('search-all').addEventListener('input', e => filter(e.target.value));
+    function filter(q) {
+        q = q.toLowerCase().trim();
+        const grids = [document.getElementById('grid-home'), document.getElementById('grid-all')];
+        grids.forEach(g => g.innerHTML = '');
+        const filtered = q ? contents.filter(i => i.title.toLowerCase().includes(q) || i.category.toLowerCase().includes(q)) : contents;
+        if (filtered.length > 0) {
+            document.getElementById('featured').innerHTML = `<div class="featured-cover" style="background-image:url('${filtered[0].image}')">
+                <div class="featured-overlay"><h2>${filtered[0].title}</h2>
+                <button class="join-btn" onclick="playItem('${filtered[0].title}')">Watch Now</button></div></div>`;
+        } else {
+            document.getElementById('featured').innerHTML = '<p style="text-align:center; color:#c00;">No results found.</p>';
+        }
+        filtered.forEach(item => {
+            const card = `<div class="attract-card" onclick="playItem('${item.title}')">
+                <img src="${item.image}" alt="${item.title}">
+                <h3>${item.title}<br><small>${item.category}</small></h3></div>`;
+            grids.forEach(g => g.innerHTML += card);
+        });
+    }
+
+    function updateNav() {
+        if (currentUser) {
+            document.getElementById('auth-links').classList.add('hidden');
+            document.getElementById('user-status').classList.remove('hidden');
+            document.getElementById('user-status').innerHTML = `Hello ${currentUser.name} ${subscribed ? '<span style="color:lime;">(Premium)</span>' : ''} | <a href="#" onclick="logout()">Logout</a>`;
+        } else {
+            document.getElementById('auth-links').classList.remove('hidden');
+            document.getElementById('user-status').classList.add('hidden');
+        }
+    }
+
+    function doSignup() {
+        const name = document.getElementById('signup-name').value.trim();
+        const email = document.getElementById('signup-email').value.trim();
+        const phone = document.getElementById('signup-phone').value.trim();
+        const pwd = document.getElementById('signup-pwd').value;
+        if (users.find(u => u.phone === phone || u.email === email)) return alert('Already registered!');
+        users.push({name, email, phone, pwd});
+        localStorage.setItem('users', JSON.stringify(users));
+        alert('Signup success! Now login');
+        showSection('login');
+    }
+
+    function doLogin() {
+        const id = document.getElementById('login-id').value.trim();
+        const pwd = document.getElementById('login-pwd').value;
+        const user = users.find(u => (u.phone === id || u.email === id) && u.pwd === pwd);
+        if (user) {
+            currentUser = user;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            updateNav();
+            alert('Welcome back ' + user.name);
+            showSection('home');
+        } else alert('Wrong credentials');
+    }
+
+    function logout() {
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        updateNav();
+        showSection('home');
+    }
+
+    function selectPlan(el, amt) {
+        document.querySelectorAll('.plan-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('amount-show').innerText = amt + ' RWF';
+    }
+
+    function doSubscribe() {
+        if (!currentUser) return alert('Login first!'), showSection('login');
+        subscribed = true;
+        localStorage.setItem('subscribed', 'true');
+        updateNav();
+        alert('Subscription activated! Enjoy premium content');
+        showSection('home');
+    }
+
+    function adminRender() {
+        const list = document.getElementById('admin-list');
+        list.innerHTML = '';
+        contents.forEach((c, i) => {
+            list.innerHTML += `<div class="admin-item">
+                <div><strong>${c.title}</strong> (${c.category})<br><img src="${c.image}" width="200"></div>
+                <div><button onclick="adminEdit(${i})">Edit</button>
+                <button class="delete-btn" onclick="adminDelete(${i})">Delete</button></div>
+            </div>`;
+        });
+    }
+
+    window.adminAdd = function() {
+        const t = document.getElementById('admin-title').value.trim();
+        const cat = document.getElementById('admin-cat').value;
+        const img = document.getElementById('admin-img').value.trim();
+        if (t && img) {
+            contents.push({title: t, category: cat, image: img});
+            saveContents();
+        }
+    };
+
+    window.adminEdit = function(i) {
+        const t = prompt('New Title', contents[i].title);
+        const cat = prompt('New Category', contents[i].category);
+        const img = prompt('New Image URL', contents[i].image);
+        if (t && cat && img) {
+            contents[i] = {title: t, category: cat, image: img};
+            saveContents();
+        }
+    };
+
+    window.adminDelete = function(i) {
+        if (confirm('Delete permanently?')) {
+            contents.splice(i, 1);
+            saveContents();
+        }
+    };
+
+    function saveContents() {
+        localStorage.setItem('contents', JSON.stringify(contents));
+        render();
+        adminRender();
+    }
+
+    function showSection(id) {
+        document.querySelectorAll('.container').forEach(c => c.classList.add('hidden'));
+        document.getElementById(id).classList.remove('hidden');
+        if (id === 'home' || id === 'content') render();
+        if (id === 'admin') adminRender();
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+            const pwd = prompt('Admin Password:');
+            if (pwd === 'yourSecretPassword2025') { // CHANGE THIS TO YOUR OWN!
+                showSection('admin');
+            } else {
+                alert('Access denied!');
+            }
+        }
+    });
+
+    // Initial load
+    updateNav();
+    render();
+    showSection('home');
+</script>
+
+</body>
+</html>
